@@ -59,3 +59,16 @@ class RouterClient:
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()["output"]
+
+    def push_config(self, router_name, template_name, template_vars):
+        url = f"{self.config_url}push"
+        payload = {
+            "router_name": router_name,
+            "template_name": template_name,
+            "template_vars": template_vars
+        }
+        response = requests.post(url, json=payload)
+        if response.status_code == 404:
+            raise ValueError(f"Router '{router_name}' not found.")
+        response.raise_for_status()
+        return response.json()["result"]

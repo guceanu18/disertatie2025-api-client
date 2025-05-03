@@ -5,7 +5,7 @@ client = RouterClient()
 # Add a router
 print(client.add_router(
     name="R_INTERNET",
-    mgmt_ip="192.168.72.31",
+    mgmt_ip="192.168.72.140",
     site="ISP"
 ))
 
@@ -20,6 +20,17 @@ print(client.update_router("R_INTERNET", site="ISP_PE"))
 
 # Send a command to a router
 print(client.run_command("R_INTERNET", "show ip interface brief"))
+
+# Push a config to the router
+print(client.push_config(
+    router_name="R_INTERNET",
+    template_name="add_router.j2",
+    template_vars={
+        "mgmt_ip": "3.3.3.3",
+        "mgmt_lan_ip": "4.4.4.4"
+    }
+))
+
 
 # Delete a router
 print(client.delete_router("R_INTERNET"))
